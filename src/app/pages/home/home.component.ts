@@ -1,4 +1,4 @@
-import { Component, HostListener, OnInit } from '@angular/core';
+import { Component, HostListener, OnDestroy, OnInit } from '@angular/core';
 import { Movie } from '../../interfaces/now-playing';
 import { MoviesService } from '../../services/movies.service';
 
@@ -7,7 +7,7 @@ import { MoviesService } from '../../services/movies.service';
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css'],
 })
-export class HomeComponent implements OnInit {
+export class HomeComponent implements OnInit, OnDestroy {
   movies: Movie[] = [];
   moviesSlideshow: Movie[] = [];
   @HostListener('window:scroll', ['$event']) onScroll() {
@@ -32,5 +32,9 @@ export class HomeComponent implements OnInit {
       this.movies = movies;
       this.moviesSlideshow = movies;
     });
+  }
+
+  ngOnDestroy() {
+    this.movieService.resetCarteleraPage();
   }
 }
