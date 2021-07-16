@@ -1,3 +1,4 @@
+import { Location } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { MovieDetail } from '../../interfaces/movie-detail';
@@ -12,7 +13,8 @@ export class MovieComponent implements OnInit {
   movie: MovieDetail | undefined;
   constructor(
     private activatedRoute: ActivatedRoute,
-    private movieService: MoviesService
+    private movieService: MoviesService,
+    private location: Location
   ) {}
 
   ngOnInit(): void {
@@ -22,5 +24,7 @@ export class MovieComponent implements OnInit {
       .subscribe((movie) => (this.movie = movie));
   }
 
-  onRegresar() {}
+  onRegresar() {
+    this.location.back();
+  }
 }
