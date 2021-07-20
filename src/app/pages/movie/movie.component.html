@@ -1,4 +1,7 @@
-<div class="row" *ngIf="movie">
+<div
+  class="row animate__animated animate__fadeIn animate__faster"
+  *ngIf="movie"
+>
   <div class="col-md-6">
     <!-- Image -->
     <img
@@ -26,7 +29,7 @@
         {{ movie.vote_average | number: "1.1-2" }}
       </div>
     </div>
-    <div class="row">
+    <div class="row mt-3">
       <div class="col text-white">
         {{ movie.overview }}
       </div>
@@ -38,5 +41,11 @@
         </button>
       </div>
     </div>
+  </div>
+</div>
+
+<div class="row mt-5" *ngIf="cast.length > 0">
+  <div class="col">
+    <app-cast-slideshow [cast]="cast"></app-cast-slideshow>
   </div>
 </div>

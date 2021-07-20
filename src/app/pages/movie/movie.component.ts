@@ -1,6 +1,7 @@
 import { Location } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Cast } from '../../interfaces/credits';
 import { MovieDetail } from '../../interfaces/movie-detail';
 import { MoviesService } from '../../services/movies.service';
 
@@ -11,17 +12,30 @@ import { MoviesService } from '../../services/movies.service';
 })
 export class MovieComponent implements OnInit {
   movie: MovieDetail | undefined;
+  cast: Cast[] = [];
   constructor(
     private activatedRoute: ActivatedRoute,
     private movieService: MoviesService,
-    private location: Location
+    private location: Location,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
     const { id } = this.activatedRoute.snapshot.params;
+    this.movieService.getMovieDetail(id).subscribe((movie) => {
+      if (!movie) {
+        this.router.navigate(['/']);
+        return;
+      }
+      this.movie = movie;
+    });
+
     this.movieService
-      .getMovieDetail(id)
-      .subscribe((movie) => (this.movie = movie));
+      .getCreditsCast(id)
+      .subscribe(
+        (cast) =>
+          (this.cast = cast.filter((actor) => actor.profile_path != null))
+      );
   }
 
   onRegresar() {
